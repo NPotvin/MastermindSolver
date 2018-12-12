@@ -24,10 +24,10 @@ public:
     Color() : _colorId(0) {}
     explicit Color(unsigned id) : _colorId(id % _nColors) {}
 
-    const unsigned getColorID() const {return _colorId;}
+    const unsigned& getColorID() const {return _colorId;}
     bool operator== (const Color& other) const {return (_colorId == other.getColorID());}
 };
 
-const unsigned Color::_nColors = N_COLORS;
+const unsigned Color::_nColors = N_COLORS();
 
 #endif //MASTERMINDSOLVER_COLOR_H

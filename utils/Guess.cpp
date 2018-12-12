@@ -2,15 +2,15 @@
 
 
 const Similarity Guess::computeDistanceTo(const Guess& other) const {
-    unsigned perfect = 0, colorOnly = 0;
+    unsigned perfect(0), colorOnly(0);
 
-    for (int i = 0 ; i < N_COLORS ; ++i) {
+    for (size_t i(0); i < N_COLORS(); ++i) {
         colorOnly += std::min(_colorCount[i], other.getColorCount(i));
     }
-    for (int i = 0 ; i < GUESS_SIZE ; ++i){
+    for (size_t i(0); i < GUESS_SIZE(); ++i){
         if (_guess[i] == other[i]) {
-            ++perfect;
-            --colorOnly;
+            perfect++;
+            colorOnly--;
         }
     }
     return Similarity {

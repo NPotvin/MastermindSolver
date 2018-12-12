@@ -22,15 +22,17 @@ private:
     std::vector<Color> _guess;
     std::vector<unsigned> _colorCount;
 
+    const unsigned& getColorCount(const size_t& i) const {return _colorCount[i];}
+
 public:
 
-    Guess() : _guess(GUESS_SIZE), _colorCount(N_COLORS) {}
+    Guess() : _guess(GUESS_SIZE()), _colorCount(N_COLORS()) {}
 
-    explicit Guess(std::vector<Color> vec) : _guess(std::move(vec)), _colorCount(N_COLORS) {
-        if (_guess.size() != GUESS_SIZE)
+    explicit Guess(std::vector<Color> vec) : _guess(std::move(vec)), _colorCount(N_COLORS()) {
+        if (_guess.size() != GUESS_SIZE())
             ;// throw error
         else {
-            for (unsigned i = 0 ; i < N_COLORS ; ++i) {
+            for (size_t i(0); i < N_COLORS(); ++i) {
                 ++(_colorCount[vec[i].getColorID()]);
             }
         }
@@ -40,8 +42,8 @@ public:
 
     bool operator==(const Guess& other) const {return (_guess == other._guess);}
     const Color& operator[](const size_t& i) const {return _guess[i % _guess.size()];}
-    const unsigned getColorCount(Color color) const {return _colorCount[color.getColorID()];}
-    const Similarity computeDistanceTo(const Guess& other) const ;
+    const unsigned& getColorCount(const Color& color) const {return _colorCount[color.getColorID()];}
+    const Similarity computeDistanceTo(const Guess& other) const;
 
 
 };
