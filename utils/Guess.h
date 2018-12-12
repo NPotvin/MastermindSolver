@@ -5,10 +5,13 @@
 #include "Color.h"
 #include "constants.h"
 #include <vector>
-#include "Result.h"
+#define MIN(X,Y)  ((X) < (Y) ? (X) : (Y))
 
-#define min(X,Y)  ((X) < (Y) ? (X) : (Y))
 
+typedef struct Similarity {
+  const unsigned perfect;
+  const unsigned colorOnly;
+} Similarity;
 
 class Guess {
 private:
@@ -41,7 +44,8 @@ public:
       return _colorCount[color.getColorID()] ;
     }
 
-    const Result computeDistanceFrom(const Guess& other) ;
+    const Similarity computeDistanceTo(const Guess& other) const ;
+
 
 };
 

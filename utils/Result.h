@@ -3,10 +3,17 @@
 
 #include "Guess.h"
 
-typedef struct Result {
-    const unsigned perfect;
-    const unsigned colorOnly;
-    const Guess guess;
-} Result;
+
+class Result {
+public:
+
+  const Similarity similarity;
+  const Guess guess;
+
+  explicit Result(const Guess& candSol, const Guess& other) : similarity(candSol.computeDistanceTo(other)), guess(other) {}
+
+
+
+} ;
 
 #endif //MASTERMINDSOLVER_RESULT_H
