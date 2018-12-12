@@ -1,11 +1,13 @@
 #include <iostream>
-#include <mpi.h>
+//#include <mpi.h>
 #include "utils/Guess.h"
+#include "utils/Result.h"
 #include "players/Challenger.h"
 #include "players/GameMaster.h"
 
 
 int main(int argc, char** argv) {
+    /*
     MPI_UNSIGNED rank, tot_proc ;
 
     MPI_Init(&argc, &argv);
@@ -31,8 +33,19 @@ int main(int argc, char** argv) {
         // update lsit of guesses accordingly
       }
     }
-
-    Guess test(1,2,3,4);
-    std::cout << (unsigned)test[0] << (unsigned)test[1] << (unsigned)test[2] << (unsigned)test[3] << std::endl;
-    return 0;
+*/
+    GameMaster master;
+    std::vector<Challenger> challengers(0);
+    challengers.reserve(4);
+    for (size_t i(0); i<4; ++i)
+        challengers.emplace_back(Challenger(i*GUESS_NUM(), (i+1)*GUESS_NUM()));
+    do {
+        std::vector<Guess> guesses;
+        guesses.reserve(challengers.size());
+        for (const Challenger &challenger : challengers)
+            guesses.emplace_back(challenger.getGuess());
+        Result res(master.manageGuesses(guesses));
+        for (Challenger challenger : challengers)
+            challenger.updatePlausibleGuesses(res);
+    } while (!master.isGameFinished());
 }

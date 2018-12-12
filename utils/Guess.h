@@ -5,16 +5,7 @@
 #include "Color.h"
 #include "constants.h"
 #include <vector>
-
-
-struct Similarity {
-  const unsigned perfect;
-  const unsigned colorOnly;
-
-  explicit Similarity() : perfect(0), colorOnly(0) {};
-  explicit Similarity(unsigned p, unsigned co) : perfect(p), colorOnly(co) {}
-  explicit Similarity(const Similarity& other) : perfect(other.perfect), colorOnly(other.colorOnly) {}
-};
+#include "Similarity.h"
 
 class Guess {
 private:
@@ -26,7 +17,13 @@ private:
 
 public:
 
-    Guess() : _guess(GUESS_SIZE()), _colorCount(N_COLORS()) {}
+    Guess() : _guess(0), _colorCount(0) {}
+
+    explicit Guess(const size_t& number) : _guess(0), _colorCount(N_COLORS()) {
+        _guess.reserve(GUESS_SIZE());
+        for (auto num(static_cast<unsigned>(number)); _guess.size() < GUESS_SIZE(); num /= N_COLORS())
+            _guess.emplace_back(Color(num%N_COLORS()));
+    }
 
     explicit Guess(std::vector<Color> vec) : _guess(std::move(vec)), _colorCount(N_COLORS()) {
         if (_guess.size() != GUESS_SIZE())
@@ -40,12 +37,10 @@ public:
 
     Guess(const Guess& other) = default;
 
-    bool operator==(const Guess& other) const {return (_guess == other._guess);}
+    const bool operator==(const Guess& other) const {return (_guess == other._guess);}
     const Color& operator[](const size_t& i) const {return _guess[i % _guess.size()];}
     const unsigned& getColorCount(const Color& color) const {return _colorCount[color.getColorID()];}
     const Similarity computeDistanceTo(const Guess& other) const;
-
-
 };
 
 
