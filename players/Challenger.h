@@ -28,11 +28,12 @@ public:
     }
 
     void updatePlausibleGuesses(const Result& result) {
-        for (std::vector<Guess>::iterator it = _guesses.begin() ; it != _guesses.end() ; ++it) {
-          Similarity currSim((*it).computeDistanceTo(result.guess)) ;
-          if (*it == result.guess || currSim.perfect < result.sim.perfect || currSim.colorOnly < result.sim.colorOnly) {
-            _guesses.erase(it);
-          }
+        for (size_t i(0); i<_guesses.size();) {
+            Similarity currSim(_guesses[i].computeDistanceTo(result.guess));
+            if (_guesses[i] == result.guess || currSim.perfect < result.sim.perfect || currSim.colorOnly < result.sim.colorOnly)
+                _guesses.erase(_guesses.begin()+i);
+            else
+                i++;
         }
     }
 };

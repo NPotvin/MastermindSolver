@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "constants.h"
+
 class Color {
     /* TODO :
      * We need to have a discussion about the number of player we are going to use (and if that number is fixed
@@ -14,20 +15,19 @@ class Color {
      * we should probably rename this class too, since it is not strictly speaking a color
      */
 private:
-    static const unsigned _n_colors = N_COLORS;
-    const unsigned _colorId ;
+
+    static const unsigned _nColors;
+    unsigned _colorId;
 
 public:
 
     Color() : _colorId(0) {}
-    Color(unsigned id) : _colorId(id % _n_colors) {}
+    explicit Color(unsigned id) : _colorId(id % _nColors) {}
 
     const unsigned getColorID() const {return _colorId;}
-
-    bool operator== (const Color& other) const {
-      return (_colorId == other.getColorID()) ;
-    }
+    bool operator== (const Color& other) const {return (_colorId == other.getColorID());}
 };
 
+const unsigned Color::_nColors = N_COLORS;
 
 #endif //MASTERMINDSOLVER_COLOR_H
