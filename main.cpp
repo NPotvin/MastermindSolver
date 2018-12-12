@@ -34,18 +34,29 @@ int main(int argc, char** argv) {
       }
     }
 */
+    const size_t numPlayers(4);
     GameMaster master;
     std::vector<Challenger> challengers(0);
-    challengers.reserve(4);
-    for (size_t i(0); i<4; ++i)
-        challengers.emplace_back(Challenger(i*GUESS_NUM(), (i+1)*GUESS_NUM()));
+    challengers.reserve(numPlayers);
+    for (size_t i(0), j(0); i < numPlayers; ++i) {
+        const size_t begin(i*(GUESS_NUM()/numPlayers)+j);
+        if (j<GUESS_NUM()%numPlayers) j++;
+        const size_t end((i+1)*(GUESS_NUM()/numPlayers)+j);
+        challengers.emplace_back(begin, end);
+    }
+    size_t TESTTMP(0);
     do {
         std::vector<Guess> guesses;
         guesses.reserve(challengers.size());
-        for (const Challenger &challenger : challengers)
-            guesses.emplace_back(challenger.getGuess());
+        for (const Challenger& challenger : challengers)
+            if (!challenger.empty())
+                guesses.emplace_back(challenger.getGuess());
         Result res(master.manageGuesses(guesses));
-        for (Challenger challenger : challengers)
+        for (Challenger& challenger : challengers)
             challenger.updatePlausibleGuesses(res);
+        TESTTMP++;
+        std::cout<<"_____________________________________________________________________________________"<<std::endl;
+        std::cout<<"_____________________________________________________________________________________"<<std::endl;
+    //} while (TESTTMP<3);
     } while (!master.isGameFinished());
 }

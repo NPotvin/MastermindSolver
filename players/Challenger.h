@@ -7,6 +7,8 @@
 #include "../utils/Result.h"
 #include "../utils/Color.h"
 
+#include <iostream>
+
 class Challenger {
 private:
 
@@ -27,16 +29,37 @@ public:
         return _guesses[0];
     }
 
+    const bool empty() const {return _guesses.empty();}
+
     void updatePlausibleGuesses(const Result& result) {
+        print();
+        std::cout<<"Received result ";
+        for (size_t i(0); i<GUESS_SIZE(); ++i)
+            std::cout<<result.getGuess()[i].getColorID()<<" ";
+        std::cout<<std::endl;
         for (size_t i(0); i<_guesses.size();) {
             Similarity currSim(_guesses[i].computeDistanceTo(result.getGuess()));
             if (_guesses[i] == result.getGuess() ||
                 currSim.getPerfect() < result.getPerfect() ||
                 currSim.getColorOnly() < result.getColorOnly()
-                )
-                _guesses.erase(_guesses.begin()+i);
+                ) {
+                for (size_t j(i); j<_guesses.size()-1; ++j)
+                    _guesses[j] = _guesses[j+1];
+                _guesses.pop_back();
+            }
             else
                 i++;
+        }
+        print();
+        std::cout<<"___________________"<<std::endl;
+    }
+
+    void print() {
+        std::cout<<"guesses :"<<std::endl;
+        for (Guess guess : _guesses) {
+            for (size_t i(0); i < GUESS_SIZE(); ++i)
+                std::cout << guess[i].getColorID() << ' ';
+            std::cout << std::endl;
         }
     }
 };

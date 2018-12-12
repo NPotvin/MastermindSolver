@@ -13,7 +13,10 @@ private:
 
 public:
 
-    explicit Result(const Guess& candSol, const Guess& other) : _sim(candSol.computeDistanceTo(other)), _guess(other) {}
+    explicit Result(const Guess& solution, const Guess& candidate) :
+            _sim(solution.computeDistanceTo(candidate)),
+            _guess(candidate)
+            {}
 
     //const Similarity& getSim() const {return _sim;}
     const unsigned& getPerfect() const {return _sim.getPerfect();}

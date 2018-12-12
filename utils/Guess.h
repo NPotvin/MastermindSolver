@@ -7,6 +7,8 @@
 #include <vector>
 #include "Similarity.h"
 
+#include <iostream>
+
 class Guess {
 private:
 

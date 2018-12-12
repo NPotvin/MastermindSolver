@@ -18,13 +18,14 @@ private:
 
 public:
 
+    GameMaster(const GameMaster&) = delete;
     GameMaster() : _solution(rand(GUESS_NUM())), _finished(false) {}
 
     const bool isGameFinished() const {return _finished;}
 
     const Result manageGuesses(const std::vector<Guess>& guesses) {
-        Result res(guesses[rand(guesses.size())], _solution);
-        _finished = res.getPerfect() == GUESS_NUM();
+        Result res(_solution, guesses[rand(guesses.size())]);
+        _finished = res.getPerfect() == GUESS_SIZE();
         return res;
     }
 };
