@@ -22,8 +22,11 @@ public:
     Color() : _colorId(0) {}
     Color(unsigned id) : _colorId(id % _n_colors) {}
 
-    const unsigned getColor() const {return _colorId;}
+    const unsigned getColorID() const {return _colorId;}
 
+    bool operator== (const Color& other) {
+      return (_colorId == other.getColorID()) ;
+    }
 };
 
 

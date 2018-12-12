@@ -5,28 +5,43 @@
 #include "Color.h"
 #include "constants.h"
 #include <vector>
+#include "Result.h"
+
+#define min(X,Y)  ((X) < (Y) ? (X) : (Y))
+
 
 class Guess {
 private:
 
-    // colors are encoded on 8 bits, since a guess is 4 colors, we need 32 bits
-    // (it is explicit in order to avoid platform dependent size to mess up things)
     std::vector<Color> _guess;
+    std::vector<unsigned> _colorCount;
 
 public:
 
-    Guess() : _guess(GUESS_SIZE, 0) {}
-    Guess(const std::vector<Color>& vec){
-      if (vec.size() == GUESS_SIZE) _guess(vec)
+    Guess() : _guess(GUESS_SIZE, 0), _colorCount(N_COLORS, 0) {}
+
+    explicit Guess(std::vector<Color> vec) : _guess(std::move(vec)), _colorCount(N_COLORS, 0) {
+      if (_guess.size() != GUESS_SIZE)
+        ;// throw error
       else {
-        // throw error
+        for (unsigned i = 0 ; i < N_COLORS ; ++i) {
+          ++(_colorCount[vec[i].getColorID()]);
+        }
       }
     }
+
+    explicit Guess(const Guess& other) : _guess(std::move(other._guess)), _colorCount(std::move(other._colorCount)) {}
 
     const Color& operator[](const size_t& i) const {
         return _guess[i % _guess.size()];
     }
 
+
+    const unsigned getColorCount(Color color) {
+      return _colorCount[color.getColorID()] ;
+    }
+
+    const Result computeDistanceFrom(const Guess& other) ;
 
 };
 
