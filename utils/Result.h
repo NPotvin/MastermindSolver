@@ -7,10 +7,10 @@
 class Result {
 public:
 
-  const Similarity similarity;
+  const Similarity sim;
   const Guess guess;
 
-  explicit Result(const Guess& candSol, const Guess& other) : similarity(candSol.computeDistanceTo(other)), guess(other) {}
+  explicit Result(const Guess& candSol, const Guess& other) : sim(candSol.computeDistanceTo(other)), guess(other) {}
 
 
 

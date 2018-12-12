@@ -8,10 +8,14 @@
 #define MIN(X,Y)  ((X) < (Y) ? (X) : (Y))
 
 
-typedef struct Similarity {
+struct Similarity {
   const unsigned perfect;
   const unsigned colorOnly;
-} Similarity;
+
+  explicit Similarity() : perfect(0), colorOnly(0) {};
+  explicit Similarity(unsigned p, unsigned co) : perfect(p), colorOnly(co) {}
+  explicit Similarity(const Similarity& other) : perfect(other.perfect), colorOnly(other.colorOnly) {}
+};
 
 class Guess {
 private:
@@ -35,6 +39,10 @@ public:
 
     explicit Guess(const Guess& other) : _guess(std::move(other._guess)), _colorCount(std::move(other._colorCount)) {}
 
+
+    bool operator==(const Guess& other) const {
+      return (_guess == other._guess);
+    }
     const Color& operator[](const size_t& i) const {
         return _guess[i % _guess.size()];
     }

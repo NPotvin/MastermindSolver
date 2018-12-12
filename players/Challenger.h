@@ -4,19 +4,19 @@
 
 #include <vector>
 #include "../utils/Guess.h"
-#include "../utils/Color.h"
 #include "../utils/Result.h"
+#include "../utils/Color.h"
 
 class Challenger {
 private:
 
     const unsigned _mask = 0;
 
-    const std::vector<Guess> _guesses;
+    std::vector<Guess> _guesses;
 
 public:
 
-    explicit Challenger(const size_t& id) : _mask(Color::getColorMask(id)), _guesses(std::vector<Guess>(0)) {
+    Challenger() {
         // TODO determine the size of the guess vector in the init list (depends on the way we generate the mask)
         // TODO generate guesses
     }
@@ -27,9 +27,13 @@ public:
         return _guesses[0];
     }
 
-    void manageResult(const Result& result) {
-        // TODO use mask to determine if the result concerns our guesses
-        // TODO remove the guesses that are no longer plausible
+    void updatePlausibleGuesses(const Result& result) {
+        for (std::vector<Guess>::iterator it = _guesses.begin() ; it != _guesses.end() ; ++it) {
+          Similarity currSim((*it).computeDistanceTo(result.guess)) ;
+          if (*it == result.guess || currSim.perfect < result.sim.perfect || currSim.colorOnly < result.sim.colorOnly) {
+            _guesses.erase(it);
+          }
+        }
     }
 };
 
