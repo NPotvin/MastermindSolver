@@ -1,0 +1,7 @@
+#ifndef MASTERMIND_CONSTANTS
+#define MASTERMIND_CONSTANTS
+
+#define GUESS_SIZE 4
+#define N_COLORS 10
+
+#endif
