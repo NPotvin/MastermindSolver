@@ -26,6 +26,7 @@ int main(int argc, char** argv) {
 
     if (!rank) {
         master = new GameMaster;
+        master->printSol();
         playersGuesses = new Guess[tot_proc];
         while (!master->isGameFinished()) {
             MPI_Gather(playersGuesses, sizeof(Guess), MPI_BYTE,
@@ -34,8 +35,6 @@ int main(int argc, char** argv) {
             Result res(master->manageGuesses(&(playersGuesses[1]), static_cast<const size_t &>(tot_proc - 1)));
             MPI_Bcast(&res, sizeof(Result),
                       MPI_BYTE, 0, MPI_COMM_WORLD);
-            std::cout << "Collecting guesses" << std::endl ;
-
         }
     }
     else {
