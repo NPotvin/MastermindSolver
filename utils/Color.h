@@ -7,7 +7,7 @@
 class Color {
 private:
 
-    static const unsigned _nColors = N_COLORS();
+    static const unsigned _nColors;
     unsigned _colorId;
 
 public:

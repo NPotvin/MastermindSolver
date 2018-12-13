@@ -49,8 +49,7 @@ int main(int argc, char** argv) {
       }
       MPI_Bcast((void*) &evaluated_guess, sizeof(Result),
                 MPI_BYTE, 0, MPI_COMM_WORLD);
+     }
      challenger->updatePlausibleGuesses(evaluated_guess);
      done = evaluated_guess.getPerfect() == GUESS_SIZE() ;
-   }
-   MPI_Finalize();
 }
