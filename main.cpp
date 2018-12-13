@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
     }
     else{
       challenger = new Challenger;
+      playerGuesses = new Gues[1];
     }
 
     while (!done) {
