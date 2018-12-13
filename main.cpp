@@ -14,6 +14,8 @@ int main(int argc, char** argv) {
     GameMaster *master=nullptr;
     Challenger *challenger=nullptr;
 
+    srand(static_cast<unsigned int>(time(nullptr)));
+
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &tot_proc);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -34,9 +36,8 @@ int main(int argc, char** argv) {
             Result res(master->manageGuesses(&(playersGuesses[1]), static_cast<const size_t &>(tot_proc - 1)));
             MPI_Bcast(&res, sizeof(Result),
                       MPI_BYTE, 0, MPI_COMM_WORLD);
-            std::cout << "Collecting guesses" << std::endl ;
-
         }
+        std::cout<<"game finished"<<std::endl;
     }
     else {
         auto begin(static_cast<size_t>(rank-1)*(GUESS_NUM())/(tot_proc-1));
@@ -62,6 +63,7 @@ int main(int argc, char** argv) {
             done = res.getPerfect() == GUESS_SIZE() ;
             challenger->updatePlausibleGuesses(res);
         }
+        std::cout<<"challenger "<<rank<<" out"<<std::endl;
     }
     MPI_Finalize();
 }
