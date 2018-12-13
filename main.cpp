@@ -7,12 +7,10 @@
 
 
 int main(int argc, char** argv) {
-    int guess_count, tot_proc, rank;
-    bool done = false;
-    Guess *playersGuesses = nullptr;
-    Result evaluated_guess;
-    GameMaster *master=nullptr;
-    Challenger *challenger=nullptr;
+    int tot_proc, rank;
+    bool done(false);
+    Guess *playersGuesses(nullptr);
+    bool *status(nullptr);
 
     srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -27,14 +25,24 @@ int main(int argc, char** argv) {
     }
 
     if (!rank) {
-        master = new GameMaster;
-        master->printSol();
+        GameMaster master;
+        master.printSol();
         playersGuesses = new Guess[tot_proc];
-        while (!master->isGameFinished()) {
+        status = new bool[tot_proc];
+        std::vector<Guess> guesses(0);
+        guesses.reserve(static_cast<size_t>(tot_proc - 1));
+        while (!master.isGameFinished()) {
+            guesses.clear();
             MPI_Gather(playersGuesses, sizeof(Guess), MPI_BYTE,
                        playersGuesses, sizeof(Guess), MPI_BYTE,
                        0, MPI_COMM_WORLD);
-            Result res(master->manageGuesses(&(playersGuesses[1]), static_cast<const size_t &>(tot_proc - 1)));
+            MPI_Gather(status, 1, MPI_CXX_BOOL,
+                       status, 1, MPI_CXX_BOOL,
+                       0, MPI_COMM_WORLD);
+            for (size_t i(1); i<tot_proc; ++i)
+                if (status[i])
+                    guesses.push_back(playersGuesses[i]);
+            Result res(master.manageGuesses(guesses));
             MPI_Bcast(&res, sizeof(Result),
                       MPI_BYTE, 0, MPI_COMM_WORLD);
         }
@@ -51,20 +59,39 @@ int main(int argc, char** argv) {
             begin += GUESS_NUM()%(tot_proc-1);
             end += end == GUESS_NUM() ? 0 : GUESS_NUM()%(tot_proc-1);
         }
-        challenger = new Challenger(begin, end);
-        while (not challenger->empty() && ! done) {
-            Guess guess(challenger->getGuess());
+        Challenger challenger(begin, end);
+        bool running(true);
+        while (not challenger.empty() && ! done) {
+            Guess guess(challenger.getGuess());
             Result res;
             std::cout<< "Challenger "<<rank<<" sending guess!" << std::endl;
             MPI_Gather(&guess, sizeof(Guess), MPI_BYTE,
                        playersGuesses, sizeof(Guess) , MPI_BYTE,
                        0, MPI_COMM_WORLD);
+            MPI_Gather(&running, 1, MPI_CXX_BOOL,
+                       status, 1, MPI_CXX_BOOL,
+                       0, MPI_COMM_WORLD);
             MPI_Bcast(&res, sizeof(Result),
                       MPI_BYTE, 0, MPI_COMM_WORLD);
             done = res.getPerfect() == GUESS_SIZE() ;
-            challenger->updatePlausibleGuesses(res);
+            challenger.updatePlausibleGuesses(res);
         }
         std::cout<<"challenger "<<rank<<" out"<<std::endl;
+        running = false;
+        while (!done) {
+            Guess guess;
+            Result res;
+            MPI_Gather(&guess, sizeof(Guess), MPI_BYTE,
+                       playersGuesses, sizeof(Guess) , MPI_BYTE,
+                       0, MPI_COMM_WORLD);
+            MPI_Gather(&running, sizeof(bool), MPI_CXX_BOOL,
+                       status, sizeof(bool), MPI_CXX_BOOL,
+                       0, MPI_COMM_WORLD);
+            MPI_Bcast(&res, sizeof(Result),
+                      MPI_BYTE, 0, MPI_COMM_WORLD);
+            done = res.getPerfect() == GUESS_SIZE() ;
+        }
+
     }
     MPI_Finalize();
 }

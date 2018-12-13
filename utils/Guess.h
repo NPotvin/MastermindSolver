@@ -20,14 +20,7 @@ private:
 
 public:
 
-    Guess() : _guess{Color()}, _colorCount{0} {
-        unsigned color;
-        for (size_t i(0); i < GUESS_SIZE(); ++i) {
-          color = rand() % N_COLORS() ;
-          _guess[i] = Color(color);
-          ++(_colorCount[color]);
-        }
-    }
+    Guess() : _guess{Color()}, _colorCount{0} {}
 
     explicit Guess(const size_t& number) : _guess{Color()}, _colorCount{0} {
         auto num(static_cast<unsigned>(number));
