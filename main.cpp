@@ -17,11 +17,10 @@ int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &tot_proc);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::cout << "THIS IS MY MODAFUCKIN RANK: " << rank << std::endl;
     if (tot_proc <= 1) {
-      std::cout << "Master can't play alone!" << std::endl;
-      MPI_Abort(MPI_COMM_WORLD, 1);
-      return 1;
+      std::cout << "Master can't play alone!" << std::endl << "At least 2 processes must be specified" << std::endl;
+      MPI_Finalize();
+      return 0;
     }
 
     if (!rank) {
