@@ -13,7 +13,7 @@ class Guess {
 private:
 
     Color _guess[GUESS_SIZE()];
-    unsigned _colorCount[GUESS_SIZE()];
+    unsigned _colorCount[N_COLORS()];
 
     const unsigned& getColorCount(const size_t& i) const {return _colorCount[i];}
 
