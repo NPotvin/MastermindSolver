@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <mpi.h>
+#include <mpi.h>
 #include "utils/Guess.h"
 #include "utils/Result.h"
 #include "players/Challenger.h"
