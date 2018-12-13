@@ -4,6 +4,7 @@
 
 #include "../utils/Guess.h"
 #include "../utils/Result.h"
+#include <stdlib.h>
 
 class GameMaster {
 private:
@@ -14,21 +15,20 @@ private:
 public:
 
     GameMaster(const GameMaster&) = delete;
-    explicit GameMaster() : _solution(), _finished(false) {}
+    explicit GameMaster() : _solution(rand() % GUESS_NUM()), _finished(false) {}
 
     const bool isGameFinished() const {return _finished;}
 
     const Result manageGuesses(const Guess * const& guesses, const size_t& size) {
-        Result res(_solution, guesses[rand() % size]);
+        unsigned player(rand() % size);
+        Result res(_solution, guesses[player]);
         _finished = res.getPerfect() == GUESS_SIZE();
         return res;
     }
 
     void printSol() const {
-      for (size_t i(0) ; i < GUESS_SIZE() ; ++i) {
-        std::cout << _solution[i].getColorID() << " ";
-      }
-      std::cout << std::endl;
+      std::cout << "Picked solution is: " << std::endl;
+      _solution.print();
     }
 };
 

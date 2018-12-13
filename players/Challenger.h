@@ -31,11 +31,6 @@ public:
     const bool empty() const {return _guesses.empty();}
 
     void updatePlausibleGuesses(const Result& result) {
-        print();
-        std::cout<<"Received result ";
-        for (size_t i(0); i<GUESS_SIZE(); ++i)
-            std::cout<<result.getGuess()[i].getColorID()<<" ";
-        std::cout<<std::endl;
         for (size_t i(0); i<_guesses.size();) {
             Similarity currSim(_guesses[i].computeDistanceTo(result.getGuess()));
             if (_guesses[i] == result.getGuess() ||
@@ -49,8 +44,6 @@ public:
             else
                 i++;
         }
-        print();
-        std::cout<<"___________________"<<std::endl;
     }
 
     void print() {
