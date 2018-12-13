@@ -6,7 +6,6 @@
 #include "../utils/Guess.h"
 #include "../utils/Result.h"
 #include "../utils/Color.h"
-#include <iostream>
 
 class Challenger {
 private:

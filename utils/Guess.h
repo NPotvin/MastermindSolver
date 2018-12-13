@@ -5,10 +5,8 @@
 #include "constants.h"
 #include "Similarity.h"
 
-#include <cstddef>
-#include <vector>
 #include <iostream>
-#include <stdlib.h>
+
 
 class Guess {
 private:
@@ -36,12 +34,11 @@ public:
 
     const bool operator==(const Guess& other) const {return (_guess == other._guess);}
     const Color& operator[](const size_t& i) const {return _guess[i % GUESS_SIZE()];}
-    const unsigned& getColorCount(const Color& color) const {return _colorCount[color.getColorID()];}
     const Similarity computeDistanceTo(const Guess& other) const;
     void print() const {
-      for (size_t i(0) ; i < GUESS_SIZE() ; ++i)
-        std::cout << _guess[i].getColorID() << " ";
-      std::cout << std::endl;
+        for (const Color& guess : _guess)
+            std::cout << guess.getColorID() << " ";
+        std::cout << std::endl;
     }
 };
 

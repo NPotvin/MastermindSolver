@@ -22,7 +22,6 @@ public:
         _guess = other._guess;
     }
 
-    //const Similarity& getSim() const {return _sim;}
     const unsigned& getPerfect() const {return _sim.getPerfect();}
     const unsigned& getColorOnly() const {return _sim.getColorOnly();}
     const Guess& getGuess() const {return _guess;}

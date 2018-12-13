@@ -26,8 +26,9 @@ public:
     }
 
     void printSol() const {
-      std::cout << "Picked solution is: " << std::endl;
-      _solution.print();
+        std::cout << "Picked solution is: ";
+        _solution.print();
+        std::cout<<std::endl;
     }
 };
 
