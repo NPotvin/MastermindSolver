@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
 
     if (!rank) {
         master = new GameMaster;
+        master->printSol();
         playersGuesses = new Guess[tot_proc];
         while (!master->isGameFinished()) {
             MPI_Gather(playersGuesses, sizeof(Guess), MPI_BYTE,

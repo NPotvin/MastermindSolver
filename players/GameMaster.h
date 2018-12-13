@@ -12,7 +12,6 @@ private:
     const Guess _solution;
     bool _finished;
 
-
 public:
 
     GameMaster(const GameMaster&) = delete;
@@ -24,6 +23,13 @@ public:
         Result res(_solution, guesses[rand() % size]);
         _finished = res.getPerfect() == GUESS_SIZE();
         return res;
+    }
+
+    void printSol() const {
+      for (size_t i(0) ; i < GUESS_SIZE() ; ++i) {
+        std::cout << _solution[i].getColorID();
+      }
+      std::cout << std:endl;
     }
 };
 
