@@ -38,6 +38,11 @@ public:
     const Color& operator[](const size_t& i) const {return _guess[i % GUESS_SIZE()];}
     const unsigned& getColorCount(const Color& color) const {return _colorCount[color.getColorID()];}
     const Similarity computeDistanceTo(const Guess& other) const;
+    void print() const {
+      for (size_t i(0) ; i < GUESS_SIZE() ; ++i)
+        std::cout << _guess[i].getColorID() << " ";
+      std::cout << std::endl;
+    }
 };
 
 

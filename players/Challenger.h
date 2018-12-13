@@ -22,20 +22,10 @@ public:
             _guesses.emplace_back(Guess(i));
     }
 
-    const Guess& getGuess() const {
-        if (_guesses.empty())
-            ;// TODO return an error to the game master
-        return _guesses[0];
-    }
-
+    const Guess& getGuess() const {return _guesses[0];}
     const bool empty() const {return _guesses.empty();}
 
     void updatePlausibleGuesses(const Result& result) {
-        print();
-        std::cout<<"Received result ";
-        for (size_t i(0); i<GUESS_SIZE(); ++i)
-            std::cout<<result.getGuess()[i].getColorID()<<" ";
-        std::cout<<std::endl;
         for (size_t i(0); i<_guesses.size();) {
             Similarity currSim(_guesses[i].computeDistanceTo(result.getGuess()));
             if (_guesses[i] == result.getGuess() ||
@@ -48,17 +38,6 @@ public:
             }
             else
                 i++;
-        }
-        print();
-        std::cout<<"___________________"<<std::endl;
-    }
-
-    void print() {
-        std::cout<<"guesses :"<<std::endl;
-        for (Guess guess : _guesses) {
-            for (size_t i(0); i < GUESS_SIZE(); ++i)
-                std::cout << guess[i].getColorID() << ' ';
-            std::cout << std::endl;
         }
     }
 };

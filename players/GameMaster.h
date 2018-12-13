@@ -4,6 +4,7 @@
 
 #include "../utils/Guess.h"
 #include "../utils/Result.h"
+#include <stdlib.h>
 
 class GameMaster {
 private:
@@ -25,10 +26,8 @@ public:
     }
 
     void printSol() const {
-      for (size_t i(0) ; i < GUESS_SIZE() ; ++i) {
-        std::cout << _solution[i].getColorID() << " ";
-      }
-      std::cout << std::endl;
+      std::cout << "Picked solution is: " << std::endl;
+      _solution.print();
     }
 };
 

@@ -7,7 +7,7 @@
 
 
 int main(int argc, char** argv) {
-    int tot_proc, rank;
+    int guess_count(0), tot_proc, rank;
     bool done(false);
     Guess *playersGuesses(nullptr);
     bool *status(nullptr);
@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
         guesses.reserve(static_cast<size_t>(tot_proc - 1));
         while (!master.isGameFinished()) {
             guesses.clear();
+            std::cout << "Collecting players' guesses" << std::endl;
             MPI_Gather(playersGuesses, sizeof(Guess), MPI_BYTE,
                        playersGuesses, sizeof(Guess), MPI_BYTE,
                        0, MPI_COMM_WORLD);
@@ -43,10 +44,15 @@ int main(int argc, char** argv) {
                 if (status[i])
                     guesses.push_back(playersGuesses[i]);
             Result res(master.manageGuesses(guesses));
+            std::cout << "Guess to be evaluated is :"<<  std::endl;
+            res.getGuess().print();
+            std::cout << "It has " << res.getPerfect()
+                      << " dots in both correct color and position, and "
+                      << res.getColorOnly() << " correct colors only" << std::endl;
             MPI_Bcast(&res, sizeof(Result),
                       MPI_BYTE, 0, MPI_COMM_WORLD);
         }
-        std::cout<<"game finished"<<std::endl;
+        std::cout << "Players found the solution in " << guess_count << " rounds" << std::endl;
     }
     else {
         auto begin(static_cast<size_t>(rank-1)*(GUESS_NUM())/(tot_proc-1));
@@ -64,7 +70,6 @@ int main(int argc, char** argv) {
         while (not challenger.empty() && ! done) {
             Guess guess(challenger.getGuess());
             Result res;
-            std::cout<< "Challenger "<<rank<<" sending guess!" << std::endl;
             MPI_Gather(&guess, sizeof(Guess), MPI_BYTE,
                        playersGuesses, sizeof(Guess) , MPI_BYTE,
                        0, MPI_COMM_WORLD);
@@ -76,7 +81,6 @@ int main(int argc, char** argv) {
             done = res.getPerfect() == GUESS_SIZE() ;
             challenger.updatePlausibleGuesses(res);
         }
-        std::cout<<"challenger "<<rank<<" out"<<std::endl;
         running = false;
         while (!done) {
             Guess guess;
@@ -91,7 +95,6 @@ int main(int argc, char** argv) {
                       MPI_BYTE, 0, MPI_COMM_WORLD);
             done = res.getPerfect() == GUESS_SIZE() ;
         }
-
     }
     MPI_Finalize();
 }
