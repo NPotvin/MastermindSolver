@@ -12,35 +12,25 @@
 class Guess {
 private:
 
-    std::vector<Color> _guess;
-    std::vector<unsigned> _colorCount;
+    Color _guess[GUESS_SIZE()];
+    unsigned _colorCount[GUESS_SIZE()];
 
     const unsigned& getColorCount(const size_t& i) const {return _colorCount[i];}
 
 public:
 
-    Guess() : _guess(0), _colorCount(0) {}
+    Guess() : _guess{Color()}, _colorCount{0} {}
 
-    explicit Guess(const size_t& number) : _guess(0), _colorCount(N_COLORS()) {
-        _guess.reserve(GUESS_SIZE());
-        for (auto num(static_cast<unsigned>(number)); _guess.size() < GUESS_SIZE(); num /= N_COLORS())
-            _guess.emplace_back(Color(num%N_COLORS()));
-    }
-
-    explicit Guess(std::vector<Color> vec) : _guess(std::move(vec)), _colorCount(N_COLORS()) {
-        if (_guess.size() != GUESS_SIZE())
-            ;// throw error
-        else {
-            for (size_t i(0); i < N_COLORS(); ++i) {
-                ++(_colorCount[vec[i].getColorID()]);
-            }
-        }
+    explicit Guess(const size_t& number) : _guess{Color()}, _colorCount{0} {
+        auto num(static_cast<unsigned>(number));
+        for (size_t i(0); i < GUESS_SIZE(); ++i, num /= N_COLORS())
+            _guess[i] = Color(num % N_COLORS());
     }
 
     Guess(const Guess& other) = default;
 
     const bool operator==(const Guess& other) const {return (_guess == other._guess);}
-    const Color& operator[](const size_t& i) const {return _guess[i % _guess.size()];}
+    const Color& operator[](const size_t& i) const {return _guess[i % GUESS_SIZE()];}
     const unsigned& getColorCount(const Color& color) const {return _colorCount[color.getColorID()];}
     const Similarity computeDistanceTo(const Guess& other) const;
 };
