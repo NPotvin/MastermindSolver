@@ -6,7 +6,6 @@
 #include "../utils/Guess.h"
 #include "../utils/Result.h"
 #include "../utils/Color.h"
-
 #include <iostream>
 
 class Challenger {
@@ -40,8 +39,8 @@ public:
         for (size_t i(0); i<_guesses.size();) {
             Similarity currSim(_guesses[i].computeDistanceTo(result.getGuess()));
             if (_guesses[i] == result.getGuess() ||
-                currSim.getPerfect() < result.getPerfect() ||
-                currSim.getColorOnly() < result.getColorOnly()
+                currSim.getPerfect() != result.getPerfect() ||
+                currSim.getColorOnly() != result.getColorOnly()
                 ) {
                 for (size_t j(i); j<_guesses.size()-1; ++j)
                     _guesses[j] = _guesses[j+1];
