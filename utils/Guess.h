@@ -1,13 +1,14 @@
 #ifndef MASTERMINDSOLVER_GUESS_H
 #define MASTERMINDSOLVER_GUESS_H
 
-#include <cstddef>
 #include "Color.h"
 #include "constants.h"
-#include <vector>
 #include "Similarity.h"
 
+#include <cstddef>
+#include <vector>
 #include <iostream>
+#include <stdlib.h>
 
 class Guess {
 private:
@@ -19,12 +20,23 @@ private:
 
 public:
 
-    Guess() : _guess{Color()}, _colorCount{0} {}
+    Guess() : _guess{Color()}, _colorCount{0} {
+        unsigned color;
+        for (size_t i(0); i < GUESS_SIZE(); ++i) {
+          color = rand() % N_COLORS() ;
+          _guess[i] = Color(color);
+          ++(_colorCount[color]);
+        }
+    }
 
     explicit Guess(const size_t& number) : _guess{Color()}, _colorCount{0} {
         auto num(static_cast<unsigned>(number));
-        for (size_t i(0); i < GUESS_SIZE(); ++i, num /= N_COLORS())
-            _guess[i] = Color(num % N_COLORS());
+        unsigned color;
+        for (size_t i(0); i < GUESS_SIZE(); ++i, num /= N_COLORS()) {
+          color = num % N_COLORS();
+          _guess[i] = Color(color);
+          ++(_colorCount[color]);
+        }
     }
 
     Guess(const Guess& other) = default;

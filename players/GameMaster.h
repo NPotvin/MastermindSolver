@@ -2,7 +2,6 @@
 #define MASTERMINDSOLVER_GAMEMASTER_H
 
 
-#include <stdlib.h>
 #include "../utils/Guess.h"
 #include "../utils/Result.h"
 
@@ -15,7 +14,7 @@ private:
 public:
 
     GameMaster(const GameMaster&) = delete;
-    explicit GameMaster() : _solution(rand() % GUESS_NUM()), _finished(false) {}
+    explicit GameMaster() : _solution(), _finished(false) {}
 
     const bool isGameFinished() const {return _finished;}
 
@@ -27,9 +26,9 @@ public:
 
     void printSol() const {
       for (size_t i(0) ; i < GUESS_SIZE() ; ++i) {
-        std::cout << _solution[i].getColorID();
+        std::cout << _solution[i].getColorID() << " ";
       }
-      std::cout << std:endl;
+      std::cout << std::endl;
     }
 };
 
