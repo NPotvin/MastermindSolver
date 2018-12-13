@@ -8,8 +8,8 @@
 class Result {
 private:
 
-    const Similarity _sim;
-    const Guess _guess;
+    Similarity _sim;
+    Guess _guess;
 
 public:
     explicit Result() : _sim(), _guess() {}
@@ -17,6 +17,10 @@ public:
             _sim(solution.computeDistanceTo(candidate)),
             _guess(candidate)
             {}
+    Result(const Result& other) {
+        _sim = other._sim;
+        _guess = other._guess;
+    }
 
     //const Similarity& getSim() const {return _sim;}
     const unsigned& getPerfect() const {return _sim.getPerfect();}

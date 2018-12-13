@@ -23,8 +23,8 @@ public:
 
     const bool isGameFinished() const {return _finished;}
 
-    const Result manageGuesses(const std::vector<Guess>& guesses) {
-        Result res(_solution, guesses[rand(guesses.size())]);
+    const Result manageGuesses(const Guess * const& guesses, const size_t& size) {
+        Result res(_solution, guesses[rand(size)]);
         _finished = res.getPerfect() == GUESS_SIZE();
         return res;
     }

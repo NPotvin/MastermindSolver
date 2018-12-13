@@ -5,8 +5,8 @@
 class Similarity {
 private:
 
-    const unsigned _perfect;
-    const unsigned _colorOnly;
+    unsigned _perfect;
+    unsigned _colorOnly;
 
 public:
 

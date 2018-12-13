@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
       ++guess_count;
       if(!rank) {
         std::cout << "Evaluating random guess: " << std::endl ;
-        evaluated_guess = master->manageGuesses(playersGuesses);
+        evaluated_guess = master->manageGuesses(playersGuesses, static_cast<const size_t>(tot_proc - 1));
         done = master->isGameFinished();
       }
       MPI_Bcast((void*) &evaluated_guess, sizeof(Result),
