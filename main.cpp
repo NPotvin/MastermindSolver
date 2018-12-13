@@ -13,6 +13,7 @@ int main(int argc, char** argv) {
     Result evaluated_guess;
     GameMaster *master;
     Challenger *challenger;
+    std::random_device rand;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &tot_proc);
@@ -26,7 +27,7 @@ int main(int argc, char** argv) {
     }
 
     if (!rank) {
-      master = new GameMaster;
+      master = new GameMaster(rand);
       playersGuesses = new Guess[tot_proc - 1];
     }
     else{
