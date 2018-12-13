@@ -11,14 +11,13 @@ int main(int argc, char** argv) {
     bool done = false;
     Guess *playersGuesses = nullptr;
     Result evaluated_guess;
-    GameMaster *master;
-    Challenger *challenger;
-    std::random_device rand;
+    GameMaster *master=nullptr;
+    Challenger *challenger=nullptr;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &tot_proc);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
+    std::cout << "THIS IS MY MODAFUCKIN RANK: " << rank << std::endl;
     if (tot_proc <= 1) {
       std::cout << "Master can't play alone!" << std::endl;
       MPI_Abort(MPI_COMM_WORLD, 1);
@@ -26,7 +25,7 @@ int main(int argc, char** argv) {
     }
 
     if (!rank) {
-      master = new GameMaster(rand);
+      master = new GameMaster;
       playersGuesses = new Guess[tot_proc];
     }
     else{
