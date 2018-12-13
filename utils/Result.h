@@ -12,7 +12,7 @@ private:
     const Guess _guess;
 
 public:
-
+    explicit Result() : _sim(), _guess() {}
     explicit Result(const Guess& solution, const Guess& candidate) :
             _sim(solution.computeDistanceTo(candidate)),
             _guess(candidate)
