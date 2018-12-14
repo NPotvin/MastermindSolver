@@ -1,0 +1,2 @@
+/u/benjarte/MastermindSolver/CMakeFiles/MastermindSolver.dir
+/u/benjarte/MastermindSolver/utils/CMakeFiles/utils.dir

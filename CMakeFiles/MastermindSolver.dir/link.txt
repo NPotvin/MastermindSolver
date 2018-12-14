@@ -1,0 +1,1 @@
+mpiCC        CMakeFiles/MastermindSolver.dir/main.cpp.o  -o MastermindSolver -rdynamic utils/libutils.a 
