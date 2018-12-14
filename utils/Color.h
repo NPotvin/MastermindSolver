@@ -16,6 +16,7 @@ public:
 
     const unsigned& getColorID() const {return _colorId;}
     const bool operator==(const Color& other) const {return (_colorId == other.getColorID());}
+    const bool operator!=(const Color& other) const {return (_colorId != other.getColorID());}
 };
 
 

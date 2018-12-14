@@ -19,6 +19,13 @@ public:
 
     const bool isGameFinished() const {return _finished;}
 
+    /**
+     * This method picks a guess at random among thoses sent by the players
+     * and builds a Result object with it
+     *
+     * @param guesses a vector of Guess objects
+     * @return a Result object
+     */
     const Result manageGuesses(const std::vector<Guess>& guesses) {
         Result res(_solution, guesses[rand() % guesses.size()]);
         _finished = res.getPerfect() == GUESS_SIZE();
